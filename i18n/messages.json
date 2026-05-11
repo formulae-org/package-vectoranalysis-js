@@ -1,0 +1,46 @@
+{
+	"pathVectorAnalysis" : "Vector Analysis",
+	"pathDifferential"   : "Vector Analysis.Differential",
+	"pathDirac"          : "Vector Analysis.Dirac",
+
+	"nameGradient"       : "Gradient",
+	"leafGradient"       : "Gradient (∇f)",
+	"childGradientField" : "Field",
+
+	"nameDivergence"       : "Divergence",
+	"leafDivergence"       : "Divergence (∇·F)",
+	"childDivergenceField" : "Field",
+
+	"nameCurl"       : "Curl",
+	"leafCurl"       : "Curl (∇×F)",
+	"childCurlField" : "Field",
+
+	"nameLaplacian"          : "Laplacian",
+	"leafLaplacian"          : "Laplacian (∇²f / Δf)",
+	"childLaplacianFunction" : "Function",
+
+	"preferenceLaplacianTitle" : "Laplacian",
+	"preferenceLaplacianNabla" : "Nabla squared (∇²f)",
+	"preferenceLaplacianDelta" : "Delta (Δf)",
+
+	"nameNorm"            : "Norm",
+	"leafNorm"            : "Norm (‖v‖)",
+	"leafNormWithOrder"   : "Norm with order (‖v‖_p)",
+	"childNormExpression" : "Expression",
+	"childNormOrder"      : "Order",
+
+	"nameInnerProduct"       : "Inner product",
+	"leafInnerProduct"       : "Inner product (⟨u, v⟩)",
+	"childInnerProductLeft"  : "Left",
+	"childInnerProductRight" : "Right",
+
+	"nameBra"         : "Bra",
+	"leafBra"         : "Bra (⟨ψ|)",
+	"nameKet"         : "Ket",
+	"leafKet"         : "Ket (|φ⟩)",
+	"nameBraket"      : "Braket",
+	"leafBraket"      : "Braket (⟨ψ|φ⟩)",
+	"childDiracState" : "State",
+	"childBraketBra"  : "Bra",
+	"childBraketKet"  : "Ket"
+}

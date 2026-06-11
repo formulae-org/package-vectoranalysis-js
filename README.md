@@ -1,12 +1,10 @@
 # package-vectoranalysis-js
 
-Vector analysis package for the [Fōrmulæ](https://formulae.org) programming language.
-
-Fōrmulæ is also a software framework for visualization, edition and manipulation of complex expressions, from many fields. The code for a specific field —i.e. vector analysis— is encapsulated in a single unit called a Fōrmulæ **package**.
+Vector analysis package for [Fōrmulæ](https://formulae.org) — the visual environment for **computing**, **composing**, and **conversing** with tree-structured expressions.
 
 This repository contains the source code for the **vector analysis package**. It provides visualization of vector differential operators, norms, inner products, and Dirac notation.
 
-The GitHub organization [formulae-org](https://github.com/formulae-org) encompasses the source code for the rest of packages, as well as the [web application](https://github.com/formulae-org/formulae-js).
+> Part of the [formulae-org](https://github.com/formulae-org) organization: the [web application](https://github.com/formulae-org/formulae-js) plus one repository per package.
 
 ### Capabilities ###
 

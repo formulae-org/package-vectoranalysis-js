@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-'use strict';
+"use strict";
 
 export class VectorAnalysisPackage extends Formulae.ExpressionPackage {};
 
@@ -95,30 +95,30 @@ function drawDoubleBar(context, x, y, height, lineWidth) {
 const NablaBase = class extends Expression {
 	getPrefix()            { return "∇"; }
 	canHaveChildren(count) { return count === 1; }
-
+	
 	prepareDisplay(context) {
 		const fontSize = context.fontInfo.size;
 		const gap      = Math.round(fontSize * PREFIX_GAP_FRAC);
 		this.nbPrefixW = Math.ceil(context.measureText(this.getPrefix()).width);
-
+		
 		let ch0 = this.children[0];
 		ch0.prepareDisplay(context);
-
+		
 		this.horzBaseline = Math.max(Math.round(fontSize / 2), ch0.horzBaseline);
 		ch0.x             = this.nbPrefixW + gap;
 		ch0.y             = this.horzBaseline - ch0.horzBaseline;
-
+		
 		this.width        = ch0.x + ch0.width;
 		this.height       = this.horzBaseline + Math.max(Math.round(fontSize / 2), ch0.height - ch0.horzBaseline);
 		this.vertBaseline = Math.round(this.width / 2);
 	}
-
+	
 	display(context, x, y) {
 		super.drawText(context, this.getPrefix(), x, y + this.horzBaseline + Math.round(context.fontInfo.size / 2));
 		let ch0 = this.children[0];
 		ch0.display(context, x + ch0.x, y + ch0.y);
 	}
-
+	
 	moveTo(direction)        { return this.children[0].moveTo(direction); }
 	moveAcross(i, direction) { return this.moveOut(direction); }
 };
@@ -155,7 +155,7 @@ function prepareDisplayLaplacianNabla(expression, context) {
 	const fontSize   = context.fontInfo.size;
 	const gap        = Math.round(fontSize * PREFIX_GAP_FRAC);
 	const nablaWidth = Math.ceil(context.measureText("∇").width);
-
+	
 	let ordWidth, smallFontSize;
 	{
 		let bkp = context.fontInfo.size;
@@ -164,18 +164,18 @@ function prepareDisplayLaplacianNabla(expression, context) {
 		ordWidth      = Math.ceil(context.measureText("2").width);
 		context.fontInfo.setSizeAbsolute(context, bkp);
 	}
-
+	
 	let ch0 = expression.children[0];
 	ch0.prepareDisplay(context);
-
+	
 	expression.horzBaseline = Math.max(Math.round(fontSize / 2), ch0.horzBaseline);
-
+	
 	expression.lpNablaWidth = nablaWidth;
 	expression.lpOrdTextY   = expression.horzBaseline - Math.round(fontSize / 2) + Math.round(smallFontSize / 2);
-
+	
 	ch0.x = nablaWidth + ordWidth + gap;
 	ch0.y = expression.horzBaseline - ch0.horzBaseline;
-
+	
 	expression.width        = ch0.x + ch0.width;
 	expression.height       = expression.horzBaseline + Math.max(Math.round(fontSize / 2), ch0.height - ch0.horzBaseline);
 	expression.vertBaseline = Math.round(expression.width / 2);
@@ -184,12 +184,12 @@ function prepareDisplayLaplacianNabla(expression, context) {
 function displayLaplacianNabla(expression, context, x, y) {
 	const fontSize = context.fontInfo.size;
 	expression.drawText(context, "∇", x, y + expression.horzBaseline + Math.round(fontSize / 2));
-
+	
 	let bkp = context.fontInfo.size;
 	context.fontInfo.setSizeRelative(context, SUPER_SIZE);
 	expression.drawText(context, "2", x + expression.lpNablaWidth, y + expression.lpOrdTextY);
 	context.fontInfo.setSizeAbsolute(context, bkp);
-
+	
 	let ch0 = expression.children[0];
 	ch0.display(context, x + ch0.x, y + ch0.y);
 }
@@ -198,14 +198,14 @@ function prepareDisplayLaplacianDelta(expression, context) {
 	const fontSize    = context.fontInfo.size;
 	const gap         = Math.round(fontSize * PREFIX_GAP_FRAC);
 	const prefixWidth = Math.ceil(context.measureText("Δ").width);
-
+	
 	let ch0 = expression.children[0];
 	ch0.prepareDisplay(context);
-
+	
 	expression.horzBaseline = Math.max(Math.round(fontSize / 2), ch0.horzBaseline);
 	ch0.x = prefixWidth + gap;
 	ch0.y = expression.horzBaseline - ch0.horzBaseline;
-
+	
 	expression.width        = ch0.x + ch0.width;
 	expression.height       = expression.horzBaseline + Math.max(Math.round(fontSize / 2), ch0.height - ch0.horzBaseline);
 	expression.vertBaseline = Math.round(expression.width / 2);
@@ -222,23 +222,25 @@ const Laplacian = class extends Expression {
 	getName()              { return VectorAnalysisPackage.messages.nameLaplacian; }
 	canHaveChildren(count) { return count === 1; }
 	getChildName(index)    { return VectorAnalysisPackage.messages.childLaplacianFunction; }
-
+	
 	prepareDisplay(context) {
 		if (VectorAnalysisPackage.styleLaplacian === LAPLACIAN_DELTA) {
 			prepareDisplayLaplacianDelta(this, context);
-		} else {
+		}
+		else {
 			prepareDisplayLaplacianNabla(this, context);
 		}
 	}
-
+	
 	display(context, x, y) {
 		if (VectorAnalysisPackage.styleLaplacian === LAPLACIAN_DELTA) {
 			displayLaplacianDelta(this, context, x, y);
-		} else {
+		}
+		else {
 			displayLaplacianNabla(this, context, x, y);
 		}
 	}
-
+	
 	moveTo(direction)        { return this.children[0].moveTo(direction); }
 	moveAcross(i, direction) { return this.moveOut(direction); }
 };
@@ -252,60 +254,62 @@ const Norm = class extends Expression {
 	getChildName(index)    {
 		return index === 0
 			? VectorAnalysisPackage.messages.childNormExpression
-			: VectorAnalysisPackage.messages.childNormOrder;
+			: VectorAnalysisPackage.messages.childNormOrder
+		;
 	}
-
+	
 	prepareDisplay(context) {
 		const fontSize  = context.fontInfo.size;
 		const gap       = Math.round(fontSize * CONTENT_GAP_FRAC);
 		const lineWidth = Math.max(1, Math.round(fontSize * LINE_THICK_FRAC));
 		const barWidth  = lineWidth + BAR_LINE_GAP + lineWidth;
-
+		
 		let ch0 = this.children[0];
 		ch0.prepareDisplay(context);
-
+		
 		this.horzBaseline = Math.max(ch0.horzBaseline, Math.round(fontSize / 2));
 		const contentH    = this.horzBaseline + Math.max(ch0.height - ch0.horzBaseline, Math.round(fontSize / 2));
-
+		
 		ch0.x = barWidth + gap;
 		ch0.y = this.horzBaseline - ch0.horzBaseline;
-
+		
 		const rightBarX = ch0.x + ch0.width + gap;
-
+		
 		this.nmLineWidth = lineWidth;
 		this.nmBarWidth  = barWidth;
 		this.nmRightBarX = rightBarX;
 		this.nmContentH  = contentH;
-
+		
 		if (this.children.length === 2) {
 			let ch1 = this.children[1];
 			let bkp = context.fontInfo.size;
 			context.fontInfo.setSizeRelative(context, SUPER_SIZE);
 			ch1.prepareDisplay(context);
 			context.fontInfo.setSizeAbsolute(context, bkp);
-
+			
 			ch1.x = rightBarX + barWidth + 2;
 			ch1.y = contentH - ch1.height;
-
+			
 			this.width  = ch1.x + ch1.width;
 			this.height = Math.max(contentH, ch1.y + ch1.height);
-		} else {
+		}
+		else {
 			this.width  = rightBarX + barWidth;
 			this.height = contentH;
 		}
-
+		
 		this.vertBaseline = barWidth + gap + ch0.vertBaseline;
 	}
-
+	
 	display(context, x, y) {
 		const lw = this.nmLineWidth;
 		drawDoubleBar(context, x, y, this.nmContentH, lw);
-
+		
 		let ch0 = this.children[0];
 		ch0.display(context, x + ch0.x, y + ch0.y);
-
+		
 		drawDoubleBar(context, x + this.nmRightBarX, y, this.nmContentH, lw);
-
+		
 		if (this.children.length === 2) {
 			let bkp = context.fontInfo.size;
 			context.fontInfo.setSizeRelative(context, SUPER_SIZE);
@@ -314,9 +318,9 @@ const Norm = class extends Expression {
 			context.fontInfo.setSizeAbsolute(context, bkp);
 		}
 	}
-
+	
 	moveTo(direction) { return this.children[0].moveTo(direction); }
-
+	
 	moveAcross(i, direction) {
 		if (this.children.length === 2) {
 			if (direction === Expression.DOWN && i === 0) return this.children[1].moveTo(direction);
@@ -337,17 +341,17 @@ const InnerProduct = class extends Expression {
 			? VectorAnalysisPackage.messages.childInnerProductLeft
 			: VectorAnalysisPackage.messages.childInnerProductRight;
 	}
-
+	
 	prepareDisplay(context) {
 		const fontSize  = context.fontInfo.size;
 		const gap       = Math.round(fontSize * CONTENT_GAP_FRAC);
 		const lineWidth = Math.max(1, Math.round(fontSize * LINE_THICK_FRAC));
-
+		
 		let ch0 = this.children[0];
 		let ch1 = this.children[1];
 		ch0.prepareDisplay(context);
 		ch1.prepareDisplay(context);
-
+		
 		this.commaWidth   = Math.ceil(context.measureText(", ").width);
 		this.horzBaseline = Math.max(ch0.horzBaseline, ch1.horzBaseline, Math.round(fontSize / 2));
 		const contentH    = this.horzBaseline + Math.max(
@@ -356,43 +360,43 @@ const InnerProduct = class extends Expression {
 			Math.round(fontSize / 2)
 		);
 		const bracketW = angleBracketWidth(contentH);
-
+		
 		this.ipBracketW  = bracketW;
 		this.ipLineWidth = lineWidth;
 		this.ipContentH  = contentH;
-
+		
 		ch0.x = bracketW + gap;
 		ch0.y = this.horzBaseline - ch0.horzBaseline;
-
+		
 		ch1.x = ch0.x + ch0.width + this.commaWidth;
 		ch1.y = this.horzBaseline - ch1.horzBaseline;
-
+		
 		this.width        = ch1.x + ch1.width + gap + bracketW;
 		this.height       = contentH;
 		this.vertBaseline = Math.round(this.width / 2);
 	}
-
+	
 	display(context, x, y) {
 		const lw = this.ipLineWidth;
 		drawOpeningAngle(context, x, y, this.ipContentH, lw);
-
+		
 		let ch0 = this.children[0];
 		ch0.display(context, x + ch0.x, y + ch0.y);
-
+		
 		super.drawText(context, ", ", x + ch0.x + ch0.width, y + this.horzBaseline + Math.round(context.fontInfo.size / 2));
-
+		
 		let ch1 = this.children[1];
 		ch1.display(context, x + ch1.x, y + ch1.y);
-
+		
 		drawClosingAngle(context, x + this.width - this.ipBracketW, y, this.ipContentH, lw);
 	}
-
+	
 	moveTo(direction) {
 		return direction === Expression.PREVIOUS
 			? this.children[1].moveTo(direction)
 			: this.children[0].moveTo(direction);
 	}
-
+	
 	moveAcross(i, direction) {
 		if (direction === Expression.NEXT     && i === 0) return this.children[1].moveTo(direction);
 		if (direction === Expression.PREVIOUS && i === 1) return this.children[0].moveTo(direction);
@@ -407,32 +411,32 @@ const DiracBra = class extends Expression {
 	getName()              { return VectorAnalysisPackage.messages.nameBra; }
 	canHaveChildren(count) { return count === 1; }
 	getChildName(index)    { return VectorAnalysisPackage.messages.childDiracState; }
-
+	
 	prepareDisplay(context) {
 		const fontSize  = context.fontInfo.size;
 		const gap       = Math.round(fontSize * CONTENT_GAP_FRAC);
 		const lineWidth = Math.max(1, Math.round(fontSize * LINE_THICK_FRAC));
-
+		
 		let ch0 = this.children[0];
 		ch0.prepareDisplay(context);
-
+		
 		this.horzBaseline = Math.max(ch0.horzBaseline, Math.round(fontSize / 2));
 		const contentH    = this.horzBaseline + Math.max(ch0.height - ch0.horzBaseline, Math.round(fontSize / 2));
 		const bracketW    = angleBracketWidth(contentH);
-
+		
 		this.dbBracketW  = bracketW;
 		this.dbLineWidth = lineWidth;
 		this.dbContentH  = contentH;
-
+		
 		ch0.x        = bracketW + gap;
 		ch0.y        = this.horzBaseline - ch0.horzBaseline;
 		this.dbPipeX = ch0.x + ch0.width + gap;
-
+		
 		this.width        = this.dbPipeX + lineWidth;
 		this.height       = contentH;
 		this.vertBaseline = bracketW + gap + ch0.vertBaseline;
 	}
-
+	
 	display(context, x, y) {
 		const lw = this.dbLineWidth;
 		drawOpeningAngle(context, x, y, this.dbContentH, lw);
@@ -440,7 +444,7 @@ const DiracBra = class extends Expression {
 		ch0.display(context, x + ch0.x, y + ch0.y);
 		drawPipe(context, x + this.dbPipeX, y, this.dbContentH, lw);
 	}
-
+	
 	moveTo(direction)        { return this.children[0].moveTo(direction); }
 	moveAcross(i, direction) { return this.moveOut(direction); }
 };
@@ -452,31 +456,31 @@ const DiracKet = class extends Expression {
 	getName()              { return VectorAnalysisPackage.messages.nameKet; }
 	canHaveChildren(count) { return count === 1; }
 	getChildName(index)    { return VectorAnalysisPackage.messages.childDiracState; }
-
+	
 	prepareDisplay(context) {
 		const fontSize  = context.fontInfo.size;
 		const gap       = Math.round(fontSize * CONTENT_GAP_FRAC);
 		const lineWidth = Math.max(1, Math.round(fontSize * LINE_THICK_FRAC));
-
+		
 		let ch0 = this.children[0];
 		ch0.prepareDisplay(context);
-
+		
 		this.horzBaseline = Math.max(ch0.horzBaseline, Math.round(fontSize / 2));
 		const contentH    = this.horzBaseline + Math.max(ch0.height - ch0.horzBaseline, Math.round(fontSize / 2));
 		const bracketW    = angleBracketWidth(contentH);
-
+		
 		this.dkBracketW  = bracketW;
 		this.dkLineWidth = lineWidth;
 		this.dkContentH  = contentH;
-
+		
 		ch0.x = lineWidth + gap;
 		ch0.y = this.horzBaseline - ch0.horzBaseline;
-
+		
 		this.width        = lineWidth + gap + ch0.width + gap + bracketW;
 		this.height       = contentH;
 		this.vertBaseline = lineWidth + gap + ch0.vertBaseline;
 	}
-
+	
 	display(context, x, y) {
 		const lw = this.dkLineWidth;
 		drawPipe(context, x, y, this.dkContentH, lw);
@@ -484,7 +488,7 @@ const DiracKet = class extends Expression {
 		ch0.display(context, x + ch0.x, y + ch0.y);
 		drawClosingAngle(context, x + this.width - this.dkBracketW, y, this.dkContentH, lw);
 	}
-
+	
 	moveTo(direction)        { return this.children[0].moveTo(direction); }
 	moveAcross(i, direction) { return this.moveOut(direction); }
 };
@@ -500,17 +504,17 @@ const DiracBraket = class extends Expression {
 			? VectorAnalysisPackage.messages.childBraketBra
 			: VectorAnalysisPackage.messages.childBraketKet;
 	}
-
+	
 	prepareDisplay(context) {
 		const fontSize  = context.fontInfo.size;
 		const gap       = Math.round(fontSize * CONTENT_GAP_FRAC);
 		const lineWidth = Math.max(1, Math.round(fontSize * LINE_THICK_FRAC));
-
+		
 		let ch0 = this.children[0];
 		let ch1 = this.children[1];
 		ch0.prepareDisplay(context);
 		ch1.prepareDisplay(context);
-
+		
 		this.horzBaseline = Math.max(ch0.horzBaseline, ch1.horzBaseline, Math.round(fontSize / 2));
 		const contentH    = this.horzBaseline + Math.max(
 			ch0.height - ch0.horzBaseline,
@@ -518,44 +522,44 @@ const DiracBraket = class extends Expression {
 			Math.round(fontSize / 2)
 		);
 		const bracketW = angleBracketWidth(contentH);
-
+		
 		this.bkBracketW  = bracketW;
 		this.bkLineWidth = lineWidth;
 		this.bkContentH  = contentH;
-
+		
 		ch0.x        = bracketW + gap;
 		ch0.y        = this.horzBaseline - ch0.horzBaseline;
 		this.bkPipeX = ch0.x + ch0.width + gap;
-
+		
 		ch1.x = this.bkPipeX + lineWidth + gap;
 		ch1.y = this.horzBaseline - ch1.horzBaseline;
-
+		
 		this.width        = ch1.x + ch1.width + gap + bracketW;
 		this.height       = contentH;
 		this.vertBaseline = Math.round(this.width / 2);
 	}
-
+	
 	display(context, x, y) {
 		const lw = this.bkLineWidth;
 		drawOpeningAngle(context, x, y, this.bkContentH, lw);
-
+		
 		let ch0 = this.children[0];
 		ch0.display(context, x + ch0.x, y + ch0.y);
-
+		
 		drawPipe(context, x + this.bkPipeX, y, this.bkContentH, lw);
-
+		
 		let ch1 = this.children[1];
 		ch1.display(context, x + ch1.x, y + ch1.y);
-
+		
 		drawClosingAngle(context, x + this.width - this.bkBracketW, y, this.bkContentH, lw);
 	}
-
+	
 	moveTo(direction) {
 		return direction === Expression.PREVIOUS
 			? this.children[1].moveTo(direction)
 			: this.children[0].moveTo(direction);
 	}
-
+	
 	moveAcross(i, direction) {
 		if (direction === Expression.NEXT     && i === 0) return this.children[1].moveTo(direction);
 		if (direction === Expression.PREVIOUS && i === 1) return this.children[0].moveTo(direction);
@@ -582,29 +586,29 @@ VectorAnalysisPackage.isConfigurable = () => true;
 VectorAnalysisPackage.onConfiguration = function() {
 	let table = document.createElement("table");
 	table.classList.add("bordered");
-
+	
 	let row, th, col, radio;
-
+	
 	row = table.insertRow();
 	th  = document.createElement("th");
 	th.appendChild(document.createTextNode(VectorAnalysisPackage.messages.preferenceLaplacianTitle));
 	row.appendChild(th);
-
+	
 	row = table.insertRow();
 	col = row.insertCell();
-
+	
 	radio = document.createElement("input"); radio.type = "radio"; radio.name = "laplacian"; radio.value = LAPLACIAN_NABLA;
 	radio.checked = (radio.value == VectorAnalysisPackage.styleLaplacian);
 	col.appendChild(radio);
 	col.appendChild(document.createTextNode(VectorAnalysisPackage.messages.preferenceLaplacianNabla));
-
+	
 	col.appendChild(document.createElement("br"));
-
+	
 	radio = document.createElement("input"); radio.type = "radio"; radio.name = "laplacian"; radio.value = LAPLACIAN_DELTA;
 	radio.checked = (radio.value == VectorAnalysisPackage.styleLaplacian);
 	col.appendChild(radio);
 	col.appendChild(document.createTextNode(VectorAnalysisPackage.messages.preferenceLaplacianDelta));
-
+	
 	row = table.insertRow();
 	th  = document.createElement("th");
 	const button = document.createElement("button");
@@ -612,7 +616,7 @@ VectorAnalysisPackage.onConfiguration = function() {
 	button.addEventListener("click", () => VectorAnalysisPackage.onChangeStyle());
 	th.appendChild(button);
 	row.appendChild(th);
-
+	
 	Formulae.setModal(table);
 };
 
@@ -622,3 +626,4 @@ VectorAnalysisPackage.onChangeStyle = function() {
 	Formulae.resetModal();
 	Formulae.refreshHandlers();
 };
+

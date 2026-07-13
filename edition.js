@@ -21,46 +21,21 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 export class VectorAnalysisPackage extends Formulae.EditionPackage {};
 
 VectorAnalysisPackage.setEditions = function() {
-	Formulae.addEdition(
-		this.messages.pathDifferential, null, this.messages.leafGradient,
-		() => Expression.wrapperEdition("VectorAnalysis.Differential.Gradient")
-	);
-	Formulae.addEdition(
-		this.messages.pathDifferential, null, this.messages.leafDivergence,
-		() => Expression.wrapperEdition("VectorAnalysis.Differential.Divergence")
-	);
-	Formulae.addEdition(
-		this.messages.pathDifferential, null, this.messages.leafCurl,
-		() => Expression.wrapperEdition("VectorAnalysis.Differential.Curl")
-	);
-	Formulae.addEdition(
-		this.messages.pathDifferential, null, this.messages.leafLaplacian,
-		() => Expression.wrapperEdition("VectorAnalysis.Differential.Laplacian")
-	);
-	Formulae.addEdition(
-		this.messages.pathVectorAnalysis, null, this.messages.leafNorm,
-		() => Expression.wrapperEdition("VectorAnalysis.Norm")
-	);
-	Formulae.addEdition(
-		this.messages.pathVectorAnalysis, null, this.messages.leafNormWithOrder,
-		() => Expression.multipleEdition("VectorAnalysis.Norm", 2, 0)
-	);
-	Formulae.addEdition(
-		this.messages.pathVectorAnalysis, null, this.messages.leafInnerProduct,
-		() => Expression.multipleEdition("VectorAnalysis.InnerProduct", 2, 0)
-	);
-	Formulae.addEdition(
-		this.messages.pathDirac, null, this.messages.leafBra,
-		() => Expression.wrapperEdition("VectorAnalysis.Dirac.Bra")
-	);
-	Formulae.addEdition(
-		this.messages.pathDirac, null, this.messages.leafKet,
-		() => Expression.wrapperEdition("VectorAnalysis.Dirac.Ket")
-	);
-	Formulae.addEdition(
-		this.messages.pathDirac, null, this.messages.leafBraket,
-		() => Expression.multipleEdition("VectorAnalysis.Dirac.Braket", 2, 0)
-	);
+	// Differential operators — wrappers: ∇▮ / ∇·▮ / ∇×▮ / ∇²▮ (Laplacian is style-dependent)
+	Formulae.addEdition(this.messages.pathDifferential, Formulae.icon("VectorAnalysis.Differential.Gradient",   1), this.messages.leafGradient,   () => Expression.wrapperEdition("VectorAnalysis.Differential.Gradient"));
+	Formulae.addEdition(this.messages.pathDifferential, Formulae.icon("VectorAnalysis.Differential.Divergence", 1), this.messages.leafDivergence, () => Expression.wrapperEdition("VectorAnalysis.Differential.Divergence"));
+	Formulae.addEdition(this.messages.pathDifferential, Formulae.icon("VectorAnalysis.Differential.Curl",       1), this.messages.leafCurl,       () => Expression.wrapperEdition("VectorAnalysis.Differential.Curl"));
+	Formulae.addEdition(this.messages.pathDifferential, Formulae.icon("VectorAnalysis.Differential.Laplacian",  1), this.messages.leafLaplacian,  () => Expression.wrapperEdition("VectorAnalysis.Differential.Laplacian"));
+
+	// Norm / inner product
+	Formulae.addEdition(this.messages.pathVectorAnalysis, Formulae.icon("VectorAnalysis.Norm",         1), this.messages.leafNorm,          () => Expression.wrapperEdition("VectorAnalysis.Norm"));
+	Formulae.addEdition(this.messages.pathVectorAnalysis, Formulae.icon("VectorAnalysis.Norm",         2), this.messages.leafNormWithOrder, () => Expression.multipleEdition("VectorAnalysis.Norm", 2, 0));
+	Formulae.addEdition(this.messages.pathVectorAnalysis, Formulae.icon("VectorAnalysis.InnerProduct", 2), this.messages.leafInnerProduct,  () => Expression.multipleEdition("VectorAnalysis.InnerProduct", 2, 0));
+
+	// Dirac notation — ⟨▮| / |▮⟩ / ⟨▮|▯⟩
+	Formulae.addEdition(this.messages.pathDirac, Formulae.icon("VectorAnalysis.Dirac.Bra",    1), this.messages.leafBra,    () => Expression.wrapperEdition("VectorAnalysis.Dirac.Bra"));
+	Formulae.addEdition(this.messages.pathDirac, Formulae.icon("VectorAnalysis.Dirac.Ket",    1), this.messages.leafKet,    () => Expression.wrapperEdition("VectorAnalysis.Dirac.Ket"));
+	Formulae.addEdition(this.messages.pathDirac, Formulae.icon("VectorAnalysis.Dirac.Braket", 2), this.messages.leafBraket, () => Expression.multipleEdition("VectorAnalysis.Dirac.Braket", 2, 0));
 };
 
 VectorAnalysisPackage.setActions = function() {};

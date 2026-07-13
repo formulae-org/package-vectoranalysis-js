@@ -625,5 +625,6 @@ VectorAnalysisPackage.onChangeStyle = function() {
 	if (laplacian) VectorAnalysisPackage.styleLaplacian = parseInt(laplacian.value);
 	Formulae.resetModal();
 	Formulae.refreshHandlers();
+	Formulae.loadReloadEditions(); // rebuild the edition panel so the style-dependent Laplacian icon (∇²▮ / Δ▮) reflects the notation
 };
 
